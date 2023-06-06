@@ -7,7 +7,7 @@ import useBlockTheme from '../../hooks/use-block-theme';
 /**
  * WordPress Dependencies
  */
-import { useRef, useEffect } from '@wordpress/element';
+import { useRef, useEffect, useState } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 
 /**
@@ -276,6 +276,11 @@ const FieldWrapper: React.FC = () => {
 			'data-iframe-height': true,
 		};
 	}
+
+  const [animationExecuted, seAnimationExecuted] = useState(false);
+  const onAnimationEnd = () => {
+    setAnimationExecuted(true);
+  };
 	return (
 		<div
 			className={ classnames(
@@ -380,8 +385,10 @@ const FieldWrapper: React.FC = () => {
 									layout === 'split-right' ) ) ) &&
 							blockType?.supports?.attachment && (
 								<div
+                  onAnimationEnd={onAnimationEnd}
 									className={ classnames(
 										'renderer-core-block-attachment-wrapper',
+                    animationExecuted ? '' : 
 										css`
 											img {
 												object-position: ${
